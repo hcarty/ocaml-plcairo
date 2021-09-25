@@ -1,12 +1,8 @@
-# OASIS_START
-# DO NOT EDIT (digest: a1e9d2bb4edc014b352e0dc4eb070000)
-version = "5.11.0"
-description = "PLplot + Cairo support"
+version = "5.15.0"
+description = "PLplot Cairo support"
 requires = "plplot cairo2"
 archive(byte) = "plcairo.cma"
 archive(byte, plugin) = "plcairo.cma"
 archive(native) = "plcairo.cmxa"
 archive(native, plugin) = "plcairo.cmxs"
 exists_if = "plcairo.cma"
-# OASIS_STOP
-
