@@ -1,0 +1,32 @@
+opam-version: "2.0"
+maintainer: "Philippe Strauss <philippe@straussaudio.ch>"
+authors: [ "Hezekiah M. Carty <hez@0ok.org>" ]
+license: "LGPL-2.1 with OCaml linking exception"
+homepage: "https://github.com/phstrauss/ocaml-plcairo/"
+dev-repo: "git://github.com/phstrauss/ocaml-plcairo.git"
+bug-reports: "https://github.com/phstrauss/ocaml-plcairo/issues"
+doc: "https://hcarty.github.io/ocaml-plcairo/plcairo"
+build: [
+  [
+      "dune" "build" "-p" name "-j" jobs
+      "@doc" {with-doc}
+  ]
+]
+depends: [
+  "ocaml" {>= "4.02.0"}
+  "dune" {>= "2.0.0"}
+  "dune-configurator"
+  "odoc" {with-doc}
+]
+depexts: [
+  ["libplplot-dev" "libshp-dev"] {os-family = "debian"}
+  ["plplot"] {os = "macos" & os-distribution = "homebrew"}
+  ["plpot"] {os-family = "arch"}
+  ["plplot-devel"] {os-family = "rhel"}
+  ["plplot-devel"] {os-family = "fedora"}
+  ["plplot-devel"] {os-family = "suse"}
+  ["plplot-devel" "epel-release"] {os-distribution = "centos"}
+  ["plplot"] {os-distribution = "nixos"}
+]
+synopsis: "Bindings for the PLplot Cairo support"
+description: "PLplot is a library for creating scientific plots http://plplot.sf.net/"

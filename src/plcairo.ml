@@ -79,7 +79,7 @@ let plblit_to_cairo ?(xoff = 0.0) ?(yoff = 0.0) ?scale_by t dest =
   Cairo.save dest;
   begin
     Cairo.scale dest x y;
-    Cairo.set_source_surface dest t.surface xoff yoff;
+    Cairo.set_source_surface dest t.surface ~x:xoff ~y:yoff;
     Cairo.paint dest;
   end;
   Cairo.restore dest;
@@ -114,7 +114,7 @@ let plrasterize ?alpha ?(antialias = Cairo.ANTIALIAS_NONE) t f =
   (* This will now be plotted on to the Cairo image surface. *)
   f ();
   (* Blit the raster image on to the main plot surface *)
-  Cairo.set_source_surface t.context img_sfc 0.0 0.0;
+  Cairo.set_source_surface t.context img_sfc ~x:0.0 ~y:0.0;
   Cairo.paint ?alpha t.context;
   (* Now set PLplot back to using the proper plot context. *)
   plset_cairo_context t.context;
@@ -192,11 +192,11 @@ let plpdfcairo ~width ~height filename =
 
 let plimagecairo ~width ~height (filename : string option) =
   filename,
-  Cairo.Image.create Cairo.Image.RGB24 width height
+  Cairo.Image.create Cairo.Image.RGB24 ~w:width ~h:height
 
 let plimagecairo_rgba ~width ~height (filename : string option) =
   filename,
-  Cairo.Image.create Cairo.Image.ARGB32 width height
+  Cairo.Image.create Cairo.Image.ARGB32 ~w:width ~h:height
 
 (** [plinit_cairo ?filename ?clear ?pre (width, height) init] creates a Cairo
     context and associates it with a new PLplot stream. *)
