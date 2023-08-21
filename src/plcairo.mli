@@ -60,8 +60,7 @@ val plblit_to_cairo :
     transparent, even if the current color palette is not.
     Note that the plotting done by [f ()] will not be antialiased by default. *)
 val plrasterize :
-  ?alpha:float ->
-  ?antialias:Cairo.antialias -> 'a t -> (unit -> 'b) -> unit
+  ?alpha:float -> ?antialias:Cairo.antialias -> 'a t -> (unit -> unit) -> unit
 
 (** [plcairo_new_page t] will advance the Cairo context associated with [t] to
     a new page, for devices which support this. *)

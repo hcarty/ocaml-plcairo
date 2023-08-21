@@ -78,8 +78,8 @@ let plblit_to_cairo ?(xoff = 0.0) ?(yoff = 0.0) ?scale_by t dest =
   in
   Cairo.save dest;
   begin
-    Cairo.scale ~x ~y dest;
-    Cairo.set_source_surface dest t.surface xoff yoff;
+    Cairo.scale dest x y;
+    Cairo.set_source_surface dest t.surface ~x:xoff ~y:yoff;
     Cairo.paint dest;
   end;
   Cairo.restore dest;
@@ -98,8 +98,8 @@ let plrasterize ?alpha ?(antialias = Cairo.ANTIALIAS_NONE) t f =
   let img_sfc =
     Cairo.Image.create
       Cairo.Image.ARGB32
-      ~width:(int_of_float t.width)
-      ~height:(int_of_float t.height)
+      ~w:(int_of_float t.width)
+      ~h:(int_of_float t.height)
   in
   let img_context = Cairo.create img_sfc in
   (* Assign the transformation matrix from the main plot context to maintain
@@ -114,7 +114,7 @@ let plrasterize ?alpha ?(antialias = Cairo.ANTIALIAS_NONE) t f =
   (* This will now be plotted on to the Cairo image surface. *)
   f ();
   (* Blit the raster image on to the main plot surface *)
-  Cairo.set_source_surface t.context img_sfc 0.0 0.0;
+  Cairo.set_source_surface t.context img_sfc ~x:0.0 ~y:0.0;
   Cairo.paint ?alpha t.context;
   (* Now set PLplot back to using the proper plot context. *)
   plset_cairo_context t.context;
@@ -174,9 +174,9 @@ let plpscairo ~width ~height filename =
   in
   Some outfile,
   Cairo.PS.create_for_stream
-    ~output:(fun bytes -> output_string outfile bytes)
-    ~width:(float_of_int width)
-    ~height:(float_of_int height)
+    (fun bytes -> output_string outfile bytes)
+    ~w:(float_of_int width)
+    ~h:(float_of_int height)
 
 let plpdfcairo ~width ~height filename =
   let outfile =
@@ -186,17 +186,17 @@ let plpdfcairo ~width ~height filename =
   in
   Some outfile,
   Cairo.PDF.create_for_stream
-    ~output:(fun bytes -> output_string outfile bytes)
-    ~width:(float_of_int width)
-    ~height:(float_of_int height)
+    (fun bytes -> output_string outfile bytes)
+    ~w:(float_of_int width)
+    ~h:(float_of_int height)
 
 let plimagecairo ~width ~height (filename : string option) =
   filename,
-  Cairo.Image.create Cairo.Image.RGB24 ~width ~height
+  Cairo.Image.create Cairo.Image.RGB24 ~w:width ~h:height
 
 let plimagecairo_rgba ~width ~height (filename : string option) =
   filename,
-  Cairo.Image.create Cairo.Image.ARGB32 ~width ~height
+  Cairo.Image.create Cairo.Image.ARGB32 ~w:width ~h:height
 
 (** [plinit_cairo ?filename ?clear ?pre (width, height) init] creates a Cairo
     context and associates it with a new PLplot stream. *)
